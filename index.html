@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tamagotti</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>🥚 Tamagotti</h1>
+    <p class="subtitle">おせわして、げんきに育てよう！</p>
+
+    <section class="pet-card">
+      <div id="moodFace" class="face">😺</div>
+      <h2 id="petName">ごっち</h2>
+      <p id="statusText">たのしい気分！</p>
+
+      <div class="bars">
+        <label>🍚 おなか <progress id="hungerBar" max="100" value="80"></progress></label>
+        <label>🧼 きれい <progress id="cleanBar" max="100" value="80"></progress></label>
+        <label>🎉 ごきげん <progress id="happyBar" max="100" value="80"></progress></label>
+        <label>💤 たいりょく <progress id="energyBar" max="100" value="80"></progress></label>
+      </div>
+
+      <div class="actions">
+        <button id="feedBtn">ごはん</button>
+        <button id="cleanBtn">おふろ</button>
+        <button id="playBtn">あそぶ</button>
+        <button id="sleepBtn">ねかせる</button>
+      </div>
+    </section>
+
+    <section class="log-card">
+      <h3>おせわログ</h3>
+      <ul id="logList"></ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
