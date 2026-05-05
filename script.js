@@ -1,91 +1,61 @@
-const state = {
-  hunger: 80,
-  clean: 80,
-  happy: 80,
-  energy: 80,
-};
-
-const moodFace = document.getElementById("moodFace");
-const statusText = document.getElementById("statusText");
+const state = { hunger: 80, clean: 80, happy: 80, energy: 80 };
 const logList = document.getElementById("logList");
+const statusText = document.getElementById("statusText");
+const pixelPet = document.getElementById("pixelPet");
 
-const bars = {
-  hunger: document.getElementById("hungerBar"),
-  clean: document.getElementById("cleanBar"),
-  happy: document.getElementById("happyBar"),
-  energy: document.getElementById("energyBar"),
+const nums = {
+  hunger: document.getElementById("hungerNum"),
+  clean: document.getElementById("cleanNum"),
+  happy: document.getElementById("happyNum"),
+  energy: document.getElementById("energyNum"),
 };
 
 const clamp = (n) => Math.max(0, Math.min(100, n));
 
-function addLog(message) {
-  const time = new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
+function log(msg) {
+  const t = new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
   const li = document.createElement("li");
-  li.textContent = `${time} - ${message}`;
+  li.textContent = `${t} - ${msg}`;
   logList.prepend(li);
-
-  while (logList.children.length > 8) {
-    logList.removeChild(logList.lastChild);
-  }
+  while (logList.children.length > 10) logList.lastChild.remove();
 }
 
-function averageStatus() {
-  return (state.hunger + state.clean + state.happy + state.energy) / 4;
-}
+function avg() { return (state.hunger + state.clean + state.happy + state.energy) / 4; }
 
 function updateMood() {
-  const avg = averageStatus();
-
-  if (avg >= 75) {
-    moodFace.textContent = "😺";
+  const a = avg();
+  if (a >= 75) {
+    pixelPet.textContent = "ᗢ";
     statusText.textContent = "ごきげん！";
-  } else if (avg >= 50) {
-    moodFace.textContent = "🙂";
-    statusText.textContent = "まあまあ元気。";
-  } else if (avg >= 25) {
-    moodFace.textContent = "😵";
-    statusText.textContent = "おせわが必要…";
+  } else if (a >= 50) {
+    pixelPet.textContent = "•ᴥ•";
+    statusText.textContent = "ふつう";
+  } else if (a >= 25) {
+    pixelPet.textContent = "x_x";
+    statusText.textContent = "おせわして！";
   } else {
-    moodFace.textContent = "💀";
-    statusText.textContent = "かなり弱ってる！急いでおせわ！";
+    pixelPet.textContent = "✖﹏✖";
+    statusText.textContent = "ピンチ…！";
   }
 }
 
 function render() {
-  Object.entries(bars).forEach(([key, bar]) => {
-    bar.value = state[key];
-  });
+  Object.keys(nums).forEach((k) => nums[k].textContent = state[k]);
   updateMood();
 }
 
-function changeStats({ hunger = 0, clean = 0, happy = 0, energy = 0 }, log) {
-  state.hunger = clamp(state.hunger + hunger);
-  state.clean = clamp(state.clean + clean);
-  state.happy = clamp(state.happy + happy);
-  state.energy = clamp(state.energy + energy);
-  addLog(log);
+function change(delta, message) {
+  Object.keys(state).forEach((k) => state[k] = clamp(state[k] + (delta[k] ?? 0)));
+  log(message);
   render();
 }
 
-document.getElementById("feedBtn").addEventListener("click", () => {
-  changeStats({ hunger: 20, clean: -6, happy: 5 }, "ごはんをあげた🍚");
-});
+document.querySelector('[data-action="feed"]').onclick = () => change({ hunger: 20, happy: 5, clean: -6 }, "ごはんタイム");
+document.querySelector('[data-action="clean"]').onclick = () => change({ clean: 22, happy: 3 }, "おふろでさっぱり");
+document.querySelector('[data-action="play"]').onclick = () => change({ happy: 24, energy: -10, hunger: -8 }, "ミニゲームで遊んだ");
+document.getElementById("sleepBtn").onclick = () => change({ energy: 26, hunger: -6 }, "ねむって回復");
 
-document.getElementById("cleanBtn").addEventListener("click", () => {
-  changeStats({ clean: 24, happy: 4 }, "きれいになってスッキリ🧼");
-});
+setInterval(() => change({ hunger: -4, clean: -3, happy: -2, energy: -4 }, "時間経過でステータスが減った"), 6500);
 
-document.getElementById("playBtn").addEventListener("click", () => {
-  changeStats({ happy: 22, energy: -10, hunger: -8, clean: -6 }, "いっぱい遊んだ🎉");
-});
-
-document.getElementById("sleepBtn").addEventListener("click", () => {
-  changeStats({ energy: 26, hunger: -8 }, "ぐっすり眠った💤");
-});
-
-setInterval(() => {
-  changeStats({ hunger: -5, clean: -4, happy: -3, energy: -4 }, "時間がたって、少しお世話が必要に…");
-}, 6000);
-
-addLog("たまごっちのお世話を始めよう！");
+log("Tamagotti 起動");
 render();
