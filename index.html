@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tamagotti Pocket</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="scene">
+    <h1>🥚 Tamagotti Pocket</h1>
+    <p class="subtitle">90s風のキーチェーン端末っぽく、おせわしよう。</p>
+
+    <section class="toy" aria-label="virtual pet device">
+      <div class="chain"></div>
+      <div class="shell-pattern"></div>
+
+      <div class="screen-wrap">
+        <div class="status-icons">🍚 🧼 🎈 ⚡</div>
+        <div class="screen" id="screen">
+          <div id="pixelPet" class="pixel-pet">ᗢ</div>
+          <div class="scanline"></div>
+        </div>
+        <div class="status-row">
+          <span>Hun</span><span id="hungerNum">80</span>
+          <span>Cln</span><span id="cleanNum">80</span>
+          <span>Hap</span><span id="happyNum">80</span>
+          <span>Eng</span><span id="energyNum">80</span>
+        </div>
+      </div>
+
+      <p id="statusText" class="status-text">ごきげん！</p>
+
+      <div class="buttons">
+        <button data-action="feed">A<br><small>ごはん</small></button>
+        <button data-action="clean">B<br><small>おふろ</small></button>
+        <button data-action="play">C<br><small>あそぶ</small></button>
+      </div>
+      <button id="sleepBtn" class="sleep-btn">💤 ねかせる</button>
+    </section>
+
+    <section class="panel">
+      <h2>おせわログ</h2>
+      <ul id="logList"></ul>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
